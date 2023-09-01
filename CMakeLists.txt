@@ -27,7 +27,7 @@ ExternalProject_Add(
         GIT_TAG ea6875fd2a3ac66547a9a33c5506da94f3ff07f2
         PREFIX "${CMAKE_BINARY_DIR}/third_party/arrow"
         INSTALL_DIR "${CMAKE_BINARY_DIR}/third_party/arrow/install"
-        BUILD_BYPRODUCTS <INSTALL_DIR>/lib/libarrow.a
+        BUILD_BYPRODUCTS <INSTALL_DIR>/lib/arrow_static.lib
         CONFIGURE_COMMAND
         ${CMAKE_COMMAND} -G${CMAKE_GENERATOR} ${OSX_ARCH_FLAG}
         -DCMAKE_BUILD_TYPE=Release
@@ -53,7 +53,7 @@ ExternalProject_Add(
 
 ExternalProject_Get_Property(ARROW_EP install_dir)
 add_library(arrow STATIC IMPORTED GLOBAL)
-set_target_properties(arrow PROPERTIES IMPORTED_LOCATION ${install_dir}/lib/libarrow.a)
+set_target_properties(arrow PROPERTIES IMPORTED_LOCATION ${install_dir}/lib/arrow_static.lib)
 
 # create static library
 add_library(${EXTENSION_NAME} STATIC ${EXTENSION_SOURCES})
