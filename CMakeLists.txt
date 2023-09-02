@@ -25,7 +25,7 @@ endif()
 
 if(WIN32)
     set(BYPRODUCT_LIB_FILE arrow_static.lib)
-    set(DUCKDB_EXTRA_LINK_FLAGS arrow_static)
+    set(DUCKDB_EXTRA_LINK_FLAGS arrow)
 else()
     set(BYPRODUCT_LIB_FILE libarrow.a)
 endif()
@@ -64,8 +64,8 @@ ExternalProject_Add(
         UPDATE_COMMAND "")
 
 ExternalProject_Get_Property(ARROW_EP install_dir)
-add_library(arrow_static STATIC IMPORTED GLOBAL)
-set_target_properties(arrow_static PROPERTIES IMPORTED_LOCATION ${install_dir}/lib/${BYPRODUCT_LIB_FILE})
+add_library(arrow STATIC IMPORTED GLOBAL)
+set_target_properties(arrow PROPERTIES IMPORTED_LOCATION ${install_dir}/lib/${BYPRODUCT_LIB_FILE})
 
 # create static library
 add_library(${EXTENSION_NAME} STATIC ${EXTENSION_SOURCES})
@@ -73,7 +73,7 @@ add_dependencies(${EXTENSION_NAME} ARROW_EP)
 if(WIN32)
     target_compile_definitions(${EXTENSION_NAME} PRIVATE ARROW_STATIC)
 endif()
-target_link_libraries(${EXTENSION_NAME} PUBLIC arrow_static)
+target_link_libraries(${EXTENSION_NAME} PUBLIC arrow)
 target_include_directories(${EXTENSION_NAME} PRIVATE ${install_dir}/include)
 
 # create loadable extension
