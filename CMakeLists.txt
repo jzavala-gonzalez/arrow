@@ -52,13 +52,13 @@ ExternalProject_Add(
         UPDATE_COMMAND "")
 
 ExternalProject_Get_Property(ARROW_EP install_dir)
-add_library(arrow STATIC IMPORTED GLOBAL)
-set_target_properties(arrow PROPERTIES IMPORTED_LOCATION ${install_dir}/lib/arrow_static.lib)
+add_library(arrow_static STATIC IMPORTED GLOBAL)
+set_target_properties(arrow_static PROPERTIES IMPORTED_LOCATION ${install_dir}/lib/arrow_static.lib)
 
 # create static library
 add_library(${EXTENSION_NAME} STATIC ${EXTENSION_SOURCES})
 add_dependencies(${EXTENSION_NAME} ARROW_EP)
-target_link_libraries(${EXTENSION_NAME} PUBLIC arrow)
+target_link_libraries(${EXTENSION_NAME} PUBLIC arrow_static)
 target_compile_definitions(${EXTENSION_NAME} PUBLIC ARROW_STATIC)
 target_include_directories(${EXTENSION_NAME} PRIVATE ${install_dir}/include)
 
@@ -66,7 +66,7 @@ target_include_directories(${EXTENSION_NAME} PRIVATE ${install_dir}/include)
 set(PARAMETERS "-warnings")
 build_loadable_extension(${TARGET_NAME} ${PARAMETERS} ${EXTENSION_SOURCES})
 add_dependencies(${TARGET_NAME}_loadable_extension ARROW_EP)
-target_link_libraries(${TARGET_NAME}_loadable_extension arrow)
+target_link_libraries(${TARGET_NAME}_loadable_extension arrow_static)
 target_compile_definitions(${EXTENSION_NAME} PUBLIC ARROW_STATIC)
 target_include_directories(${TARGET_NAME}_loadable_extension PRIVATE ${install_dir}/include)
 
