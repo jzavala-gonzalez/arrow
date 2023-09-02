@@ -65,11 +65,11 @@ target_include_directories(${EXTENSION_NAME} PRIVATE ${install_dir}/include)
 
 # create loadable extension
 set(PARAMETERS "-warnings")
+# target_link_libraries(${TARGET_NAME}_loadable_extension PUBLIC arrow_static)
+set(DUCKDB_EXTRA_LINK_FLAGS arrow_static)
 build_loadable_extension(${TARGET_NAME} ${PARAMETERS} ${EXTENSION_SOURCES})
 add_dependencies(${TARGET_NAME}_loadable_extension ARROW_EP)
 target_compile_definitions(${TARGET_NAME}_loadable_extension PUBLIC ARROW_STATIC)
-# target_link_libraries(${TARGET_NAME}_loadable_extension PUBLIC arrow_static)
-set(DUCKDB_EXTRA_LINK_FLAGS arrow_static)
 target_include_directories(${TARGET_NAME}_loadable_extension PRIVATE ${install_dir}/include)
 
 install(
