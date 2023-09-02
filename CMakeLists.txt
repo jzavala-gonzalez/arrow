@@ -1,6 +1,9 @@
 # IT BUILT!
 cmake_minimum_required(VERSION 2.8.12)
 
+message("MSG: WIN32 is ${WIN32}")
+message("MSG: OS_NAME is ${OS_NAME}")
+
 # Set extension name here
 set(TARGET_NAME arrow)
 
