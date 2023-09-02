@@ -76,9 +76,9 @@ jobs:
         CC: ${{ matrix.arch == 'linux_arm64' && 'aarch64-linux-gnu-gcc' || '' }}
         CXX: ${{ matrix.arch == 'linux_arm64' && 'aarch64-linux-gnu-g++' || '' }}
       run: |
-        make release
+        make debug
 
     - name: Test extension
       if: ${{ matrix.arch != 'linux_arm64'}}
       run: |
-        make test
+        make test_debug
