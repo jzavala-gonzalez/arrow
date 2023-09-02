@@ -70,7 +70,9 @@ set_target_properties(arrow_static PROPERTIES IMPORTED_LOCATION ${install_dir}/l
 # create static library
 add_library(${EXTENSION_NAME} STATIC ${EXTENSION_SOURCES})
 add_dependencies(${EXTENSION_NAME} ARROW_EP)
-target_compile_definitions(${EXTENSION_NAME} PRIVATE ARROW_STATIC)
+if(WIN32)
+    target_compile_definitions(${EXTENSION_NAME} PRIVATE ARROW_STATIC)
+endif()
 target_link_libraries(${EXTENSION_NAME} PUBLIC arrow_static)
 target_include_directories(${EXTENSION_NAME} PRIVATE ${install_dir}/include)
 
