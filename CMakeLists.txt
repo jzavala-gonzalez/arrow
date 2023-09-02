@@ -49,6 +49,7 @@ ExternalProject_Add(
         -DARROW_WITH_ZSTD=OFF -DARROW_WITH_UCX=OFF -DARROW_WITH_UTF8PROC=OFF
         -DARROW_WITH_RE2=OFF <SOURCE_DIR>/cpp
         CMAKE_ARGS -Wno-dev
+        -DARROW_STATIC=1 # Add your preprocessor macro here
         UPDATE_COMMAND "")
 
 ExternalProject_Get_Property(ARROW_EP install_dir)
