@@ -42,5 +42,6 @@ jobs:
 
       - name: Test Extension
         shell: bash
+        # using debug for quick testing for now
         run: |
-          build/release/test/Release/unittest.exe --test-dir . "[sql]"
+          build/debug/test/Debug/unittest.exe --test-dir . "[sql]"
