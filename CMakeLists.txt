@@ -23,6 +23,13 @@ else()
     set(OSX_ARCH_FLAG "")
 endif()
 
+if(WIN32)
+    set(BYPRODUCT_LIB_FILE arrow_static.lib)
+    set(DUCKDB_EXTRA_LINK_FLAGS arrow_static)
+else()
+    set(BYPRODUCT_LIB_FILE libarrow.a)
+endif()
+
 # Building Arrow
 include(ExternalProject)
 ExternalProject_Add(
@@ -31,7 +38,7 @@ ExternalProject_Add(
         GIT_TAG ea6875fd2a3ac66547a9a33c5506da94f3ff07f2
         PREFIX "${CMAKE_BINARY_DIR}/third_party/arrow"
         INSTALL_DIR "${CMAKE_BINARY_DIR}/third_party/arrow/install"
-        BUILD_BYPRODUCTS <INSTALL_DIR>/lib/arrow_static.lib
+        BUILD_BYPRODUCTS <INSTALL_DIR>/lib/${BYPRODUCT_LIB_FILE}
         CONFIGURE_COMMAND
         ${CMAKE_COMMAND} -G${CMAKE_GENERATOR} ${OSX_ARCH_FLAG}
         -DCMAKE_BUILD_TYPE=Release
@@ -58,7 +65,7 @@ ExternalProject_Add(
 
 ExternalProject_Get_Property(ARROW_EP install_dir)
 add_library(arrow_static STATIC IMPORTED GLOBAL)
-set_target_properties(arrow_static PROPERTIES IMPORTED_LOCATION ${install_dir}/lib/arrow_static.lib)
+set_target_properties(arrow_static PROPERTIES IMPORTED_LOCATION ${install_dir}/lib/${BYPRODUCT_LIB_FILE})
 
 # create static library
 add_library(${EXTENSION_NAME} STATIC ${EXTENSION_SOURCES})
@@ -70,10 +77,11 @@ target_include_directories(${EXTENSION_NAME} PRIVATE ${install_dir}/include)
 # create loadable extension
 set(PARAMETERS "-warnings")
 # target_link_libraries(${TARGET_NAME}_loadable_extension PUBLIC arrow_static)
-set(DUCKDB_EXTRA_LINK_FLAGS arrow_static)
 build_loadable_extension(${TARGET_NAME} ${PARAMETERS} ${EXTENSION_SOURCES})
 add_dependencies(${TARGET_NAME}_loadable_extension ARROW_EP)
-target_compile_definitions(${TARGET_NAME}_loadable_extension PUBLIC ARROW_STATIC)
+if(WIN32)
+    target_compile_definitions(${TARGET_NAME}_loadable_extension PUBLIC ARROW_STATIC)
+endif()
 target_include_directories(${TARGET_NAME}_loadable_extension PRIVATE ${install_dir}/include)
 
 install(
