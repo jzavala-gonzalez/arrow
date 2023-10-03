@@ -1,4 +1,4 @@
 [submodule "duckdb"]
 	path = duckdb
-	url = https://github.com/duckdb/duckdb
+	url = https://github.com/duckdb/duckdb/tree/v0.8.1
 	branch = master
