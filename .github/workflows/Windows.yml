@@ -43,3 +43,9 @@ jobs:
         shell: bash
         run: |
           build/release/test/Release/unittest.exe --test-dir . "[sql]"
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: windows-amd64-extensions
+          path: |
+            build/release/extension/arrow/arrow.duckdb_extension
